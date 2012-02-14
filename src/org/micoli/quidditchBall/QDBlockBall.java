@@ -23,14 +23,16 @@ public class QDBlockBall {
 	}
 
 	public boolean touchBall(Player player,int strenght,int distance) {
-		Block block = player.getWorld().getBlockAt(player.getLocation());
+		Block playerBlock = player.getWorld().getBlockAt(player.getLocation());
 		int[][] relatives = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 } };
-
+		if (playerBlock.getLocation().distance(playerBlock.getLocation())>(distance+2)){
+			return false;
+		}
 		for (int[] rel : relatives) {
-			if (block.getRelative(rel[0]*distance, 0, rel[1]*distance).equals(this.block)) {
-				Block b = block.getRelative(rel[0] * strenght, 0, rel[1] * strenght);
-				if (b.getType() == Material.AIR) {
-					switchBlock(b);
+			if (playerBlock.getRelative(rel[0]*distance, 0, rel[1]*distance).equals(this.block)) {
+				Block target = playerBlock.getRelative(rel[0] * strenght, 0, rel[1] * strenght);
+				if (target.getType() == Material.AIR) {
+					switchBlock(target);
 					if (QuidditchBall.getComments()){
 						if(player.getName()!=lastPlayerName){
 							lastPlayerName = player.getName();
@@ -39,9 +41,9 @@ public class QDBlockBall {
 					}
 					return true;
 				} else {
-					b = b.getRelative(0, -1, 0);
-					if (b.getType() == Material.AIR) {
-						switchBlock(b);
+					target = target.getRelative(0, -1, 0);
+					if (target.getType() == Material.AIR) {
+						switchBlock(target);
 						break;
 					}
 				}
