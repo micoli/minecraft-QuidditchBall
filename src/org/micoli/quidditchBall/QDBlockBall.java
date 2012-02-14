@@ -24,10 +24,13 @@ public class QDBlockBall {
 
 	public boolean touchBall(Player player,int strenght,int distance) {
 		Block playerBlock = player.getWorld().getBlockAt(player.getLocation());
-		int[][] relatives = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 } };
-		if (playerBlock.getLocation().distance(playerBlock.getLocation())>(distance+2)){
+		double ballPlayerDistance = playerBlock.getLocation().distance(this.block.getLocation());
+
+		if (ballPlayerDistance>(distance+2)){
 			return false;
 		}
+
+		int[][] relatives = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, -1 }, { 1, 1 }, { 1, -1 }, { -1, 1 } };
 		for (int[] rel : relatives) {
 			if (playerBlock.getRelative(rel[0]*distance, 0, rel[1]*distance).equals(this.block)) {
 				Block target = playerBlock.getRelative(rel[0] * strenght, 0, rel[1] * strenght);

@@ -46,7 +46,7 @@ public final class QDCommandManager implements CommandExecutor {
 							}
 						}
 					} else {
-						player.sendMessage((new StringBuilder()).append(ChatColor.RED).append("Requires more Arguments").toString());
+						player.sendMessage((new StringBuilder()).append(ChatColor.RED).append("Need more arguments").toString());
 					}
 			} else {
 				QuidditchBall.log("Pushball requires you to be a Player");
