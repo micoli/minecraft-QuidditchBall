@@ -3,5 +3,5 @@ main: org.micoli.quidditchBall.QuidditchBall
 version: 0.2
 description:
 commands:
-    activeball:
+    quidditchball:
       description: main command

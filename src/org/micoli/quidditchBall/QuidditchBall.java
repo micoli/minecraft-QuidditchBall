@@ -1,6 +1,7 @@
 package org.micoli.quidditchBall;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import org.bukkit.*;
@@ -17,11 +18,11 @@ import java.util.*;
 
 public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private static Logger logger = Logger.getLogger("Minecraft");
-	private static QDCommandManager commandManager;
+	private QDCommandManager myExecutor;
 	private static QuidditchBall instance;
 	private static Map<String,QDBlockBall> aBalls;
 	private static Map<String,Long> coolDowns;
-	private static String commandString = "activeball";
+	private static String commandString = "quidditchball";
 	private static int strenght = 2;
 	private static int touchBallCooldownTime = 4000;
 	private static boolean comments = true;
@@ -55,45 +56,23 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version ").append(pdfFile.getVersion()).append(" has been Disabled.").toString());
 	}
 
+	@Override
 	public void onEnable() {
 		aBalls					= new HashMap<String,QDBlockBall>();
 		coolDowns				= new HashMap<String,Long>();
 		instance				= this;
-		commandManager			= new QDCommandManager();
+		myExecutor				= new QDCommandManager(this);
 		PluginManager			pm = getServer().getPluginManager();
 		PluginDescriptionFile	pdfFile = getDescription();
 
 		pm.registerEvents(new QDPlayerListener(this), this);
 		pm.registerEvents(new QDBlockListener(this), this);
-		getCommand(commandString).setExecutor(commandManager);
+		getCommand("quidditchball").setExecutor(myExecutor);
 
-		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version ccc ").append(pdfFile.getVersion()).append(" is Enabled.").toString());
+		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version ").append(pdfFile.getVersion()).append(" is Enabled.").toString());
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		int mface[][] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-		log("ici ");
-		Iterator<String> ballIterator = aBalls.keySet().iterator();
-		while(ballIterator.hasNext()){
-			String ballKey =ballIterator.next();
-			QDBlockBall ball = (QDBlockBall) aBalls.get(ballKey);
-			Block block = ball.block;
-			if (block.getRelative(0, -1, 0).getType() == Material.AIR) {
-				Block b = block.getRelative(0, -1, 0);
-				ball.switchBlock(b);
-			} else {
-				for(Player player : getServer().getOnlinePlayers()) {
-					Block pBlock = player.getWorld().getBlockAt(player.getLocation());
-					for (int[] face : mface) {
-						if ((block.getRelative(face[0], -1, face[1]).getType() == Material.AIR) & (!block.getRelative(face[0], -1, face[2]).equals(pBlock))) {
-							Block b = block.getRelative(face[0], -1, face[2]);
-							ball.switchBlock(b);
-							break;
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public void setStrenght(Player player, int s) {

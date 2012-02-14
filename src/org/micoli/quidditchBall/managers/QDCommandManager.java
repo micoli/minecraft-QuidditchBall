@@ -5,14 +5,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import org.micoli.quidditchBall.QuidditchBall;
 
 public final class QDCommandManager implements CommandExecutor {
 	private QuidditchBall plugin;
 
-	public QDCommandManager() {
-		plugin = QuidditchBall.getInstance();
+	public QDCommandManager(QuidditchBall plugin){
+		this.plugin = plugin;
 	}
 
 	/**
@@ -22,6 +21,7 @@ public final class QDCommandManager implements CommandExecutor {
 	 * @param args
 	 * @return
 	 */
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		try{
 			if (sender instanceof Player) {
