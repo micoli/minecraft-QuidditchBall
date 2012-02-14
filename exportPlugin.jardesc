@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="MacRoman" standalone="no"?>
 <jardesc>
     <jar path="/Applications/local.bukkit/plugins/ActiveBall.micoli.org.jar"/>
-    <options buildIfNeeded="false" compress="true" descriptionLocation="/quidditchBall/exportPlugin.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="false" compress="true" descriptionLocation="/minecraft-QuidditchBall/exportPlugin.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,7 +11,10 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <file path="/quidditchBall/plugin.yml"/>
-        <javaElement handleIdentifier="=quidditchBall/src"/>
+        <file path="/minecraft-QuidditchBall/.classpath"/>
+        <javaElement handleIdentifier="=minecraft-QuidditchBall/src"/>
+        <file path="/minecraft-QuidditchBall/plugin.yml"/>
+        <file path="/minecraft-QuidditchBall/exportPlugin.jardesc"/>
+        <file path="/minecraft-QuidditchBall/.project"/>
     </selectedElements>
 </jardesc>

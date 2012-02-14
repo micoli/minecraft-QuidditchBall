@@ -12,7 +12,7 @@ public class QDBlockBall {
 
 	public QDBlockBall(Block b) {
 		block = b;
-		lastPlayerName = "";
+		lastPlayerName = null;
 		plugin = QuidditchBall.getInstance();
 	}
 
