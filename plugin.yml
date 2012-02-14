@@ -1,7 +1,7 @@
-name: activeball
-main: org.micoli.activeBall.QuidditchBall
+name: QuidditchBall
+main: org.micoli.quidditchBall.QuidditchBall
 version: 0.2
 description:
 commands:
     activeball:
-        description: main command
+      description: main command
