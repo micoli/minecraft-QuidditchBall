@@ -1,0 +1,7 @@
+name: activeball
+main: org.micoli.activeBall.QuidditchBall
+version: 0.2
+description:
+commands:
+    activeball:
+        description: main command
