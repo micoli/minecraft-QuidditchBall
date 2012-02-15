@@ -34,13 +34,17 @@ public final class QDCommandManager implements CommandExecutor {
 								QuidditchBall.setComments(player, true);
 							}else if (args[0].equalsIgnoreCase("commentsOff")){
 								QuidditchBall.setComments(player, false);
+							}else if (args[0].equalsIgnoreCase("create")){
+								plugin.createBall(player,false);
+							}else if (args[0].equalsIgnoreCase("create3D")){
+								plugin.createBall(player,true);
 							}
 						}
 						if (args.length > 1){
-							if (args[0].equalsIgnoreCase("add")){
-								plugin.addBall(player, args[1]);
-							}else if (args[0].equalsIgnoreCase("remove")){
+							if (args[0].equalsIgnoreCase("remove")){
 								plugin.removeBall(player, args[1]);
+							}else if (args[0].equalsIgnoreCase("convert")){
+								plugin.addBall(player,args[1]);
 							}else if (args[0].equalsIgnoreCase("strenght")){
 								plugin.setStrenght(player, Integer.parseInt(args[1]));
 							}

@@ -23,9 +23,10 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private static Map<String,QDBlockBall> aBalls;
 	private static Map<String,Long> coolDowns;
 	private static String commandString = "quidditchball";
-	private static int strenght = 2;
-	private static int touchBallCooldownTime = 4000;
+	private static int strenght = 1;
+	private static int touchBallCooldownTime = 3000;
 	private static boolean comments = true;
+	private static String lastMsg = "";
 
 	/**
 	 * @return the instance
@@ -49,6 +50,19 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public static void log(String str) {
 		logger.info(str);
+	}
+
+	public static void sendComments(Player player,String text,boolean global){
+		if (getComments()){
+			if(!QuidditchBall.lastMsg.equalsIgnoreCase(text)){
+				QuidditchBall.lastMsg = text+"";
+				if(global){
+					getInstance().getServer().broadcastMessage(text);
+				}else{
+					player.sendMessage(text);
+				}
+			}
+		}
 	}
 
 	public void onDisable() {
@@ -94,12 +108,27 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void addBall(Player player, String name) {
 		Block block = player.getTargetBlock(null, 50);
-		QDBlockBall ball = new QDBlockBall(block);
+		QDBlockBall ball = new QDBlockBall(block,player);
 		if (aBalls.containsKey(name)){
 			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" already exists.").toString());
 		}else{
 			aBalls.put(name,ball);
 			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" added.").toString());
+		}
+	}
+
+	public void createBall(Player player,boolean flyingMode) {
+		String name=String.format("ball__%08d",aBalls.size());
+		List<Block> lBlock = player.getLineOfSight(null, 2);
+		Block block = lBlock.get(0);
+		if (block.getType() == Material.AIR){
+			block.setType(Material.PUMPKIN);
+			QDBlockBall ball = new QDBlockBall(block,player);
+			ball.setFlyingBall(flyingMode);
+			aBalls.put(name,ball);
+			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" added.").toString());
+		}else{
+			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GREEN).append(" can not be added, not in front of AIR.").toString());
 		}
 	}
 
