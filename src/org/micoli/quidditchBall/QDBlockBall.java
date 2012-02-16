@@ -42,6 +42,10 @@ public class QDBlockBall {
 		}
 	}
 
+	public int xyzDistance(Location location){
+		return (int)Math.max(Math.max( Math.abs(location.getX()-this.block.getX()) , Math.abs(location.getY()-this.block.getY()) ) ,Math.abs(location.getZ()-this.block.getZ()) ) ;
+	}
+
 	public boolean touchBall(Player player,int strenght,int distance) {
 		Block playerBlock = player.getWorld().getBlockAt(player.getLocation());
 		Location locPlayer = playerBlock.getLocation();
@@ -50,13 +54,14 @@ public class QDBlockBall {
 		}
 		Location locBall = this.block.getLocation();
 
-		double ballPlayerDistance = locBall.distance(locPlayer);
-
-		Vector vector = locPlayer.subtract(locBall).toVector().normalize();
+		double ballPlayerDistance = this.xyzDistance(locPlayer);
 
 		if (ballPlayerDistance > distance+1){
 			return false;
 		}
+
+		Vector vector = locPlayer.subtract(locBall).toVector().normalize();
+
 		double x=vector.getX(),y=vector.getY(),z=vector.getZ();
 
 		vector = new Vector(-1*(x==0?0:x/Math.abs(x)),-1*(y==0?0:y/Math.abs(y)),-1*(z==0?0:z/Math.abs(z)));

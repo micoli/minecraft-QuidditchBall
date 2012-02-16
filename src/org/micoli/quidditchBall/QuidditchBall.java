@@ -83,7 +83,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		pm.registerEvents(new QDBlockListener(this), this);
 		getCommand("quidditchball").setExecutor(myExecutor);
 
-		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version ").append(pdfFile.getVersion()).append(" is Enabled.").toString());
+		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version. ").append(pdfFile.getVersion()).append(" is Enabled.").toString());
 	}
 
 	public void actionPerformed(ActionEvent event) {
