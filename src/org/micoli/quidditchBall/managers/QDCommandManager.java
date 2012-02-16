@@ -1,10 +1,10 @@
 package org.micoli.quidditchBall.managers;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.micoli.minecraft.utils.ChatFormatter;
 import org.micoli.quidditchBall.QuidditchBall;
 
 public final class QDCommandManager implements CommandExecutor {
@@ -28,7 +28,7 @@ public final class QDCommandManager implements CommandExecutor {
 				Player player = (Player) sender;
 				if (command.getName().equalsIgnoreCase(QuidditchBall.getCommandString()))
 					if (args.length > 0) {
-						QuidditchBall.log("Command " + args[0]);
+						QuidditchBall.log("[QuidditchBall] Command " + args[0]);
 						if (args.length == 1){
 							if (args[0].equalsIgnoreCase("commentsOn")){
 								QuidditchBall.setComments(player, true);
@@ -50,14 +50,14 @@ public final class QDCommandManager implements CommandExecutor {
 							}
 						}
 					} else {
-						player.sendMessage((new StringBuilder()).append(ChatColor.RED).append("Need more arguments").toString());
+						player.sendMessage(ChatFormatter.format("{ChatColor.RED} Need more arguments"));
 					}
 			} else {
-				QuidditchBall.log("Pushball requires you to be a Player");
+				QuidditchBall.log(ChatFormatter.format("{ChatColor.RED}Pushball requires you to be a Player"));
 			}
 			return false;
 		} catch (Exception ex) {
-			QuidditchBall.log((new StringBuilder()).append("Command failure: {0}").append(ex.getMessage()).toString());
+			QuidditchBall.log(ChatFormatter.format("{ChatColor.RED}Command failure: %s",ex.getMessage()));
 		}
 
 		return false;

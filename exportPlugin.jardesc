@@ -11,6 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=minecraft-utils"/>
         <javaElement handleIdentifier="=minecraft-QuidditchBall/src"/>
         <file path="/minecraft-QuidditchBall/plugin.yml"/>
     </selectedElements>

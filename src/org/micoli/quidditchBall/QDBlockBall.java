@@ -1,11 +1,11 @@
 package org.micoli.quidditchBall;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.micoli.minecraft.utils.ChatFormatter;
 
 public class QDBlockBall {
 	Block block;
@@ -86,7 +86,7 @@ public class QDBlockBall {
 				QuidditchBall.sendComments(player,this.block.getLocation().toString()+" "+target.getLocation().toString(),false);
 			}
 			switchBlock(target);
-			QuidditchBall.sendComments(player,(new StringBuilder()).append(ChatColor.AQUA).append(player.getName()).append(" touch the ball.").toString(),true);
+			QuidditchBall.sendComments(player,ChatFormatter.format("{ChatColor.GOLD}%s{ChatColor.AQUA} touch the ball.",player.getName()),true);
 			return true;
 		}
 		return false;

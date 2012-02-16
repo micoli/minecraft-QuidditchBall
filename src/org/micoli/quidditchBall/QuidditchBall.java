@@ -1,20 +1,24 @@
 package org.micoli.quidditchBall;
 
 import java.awt.event.ActionEvent;
-
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-import org.bukkit.*;
+
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.micoli.quidditchBall.listeners.*;
-import org.micoli.quidditchBall.managers.*;
-
-import java.util.*;
+import org.micoli.minecraft.utils.ChatFormatter;
+import org.micoli.quidditchBall.listeners.QDBlockListener;
+import org.micoli.quidditchBall.listeners.QDPlayerListener;
+import org.micoli.quidditchBall.managers.QDCommandManager;
 
 public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private static Logger logger = Logger.getLogger("Minecraft");
@@ -41,7 +45,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public static void setComments(Player player, boolean active){
 		comments = active;
-		player.sendMessage((new StringBuilder()).append(ChatColor.RED).append(active?"comments activated":"comments desactived").toString());
+		player.sendMessage(ChatFormatter.format("{ChatColor.RED} %s",(active?"comments activated":"comments desactived")));
 	}
 
 	public static boolean getComments(){
@@ -67,7 +71,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = getDescription();
-		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version ").append(pdfFile.getVersion()).append(" has been Disabled.").toString());
+		log(ChatFormatter.format("%s version disabled",pdfFile.getName(),pdfFile.getVersion()));
 	}
 
 	@Override
@@ -81,9 +85,9 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 		pm.registerEvents(new QDPlayerListener(this), this);
 		pm.registerEvents(new QDBlockListener(this), this);
-		getCommand("quidditchball").setExecutor(myExecutor);
+		getCommand(getCommandString()).setExecutor(myExecutor);
 
-		log((new StringBuilder(String.valueOf(pdfFile.getName()))).append(" Version. ").append(pdfFile.getVersion()).append(" is Enabled.").toString());
+		log(ChatFormatter.format("%s version enabled",pdfFile.getName(),pdfFile.getVersion()));
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -91,7 +95,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void setStrenght(Player player, int s) {
 		strenght = s;
-		player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("strenght positionned (").append(Integer.toString(s)).append(")").toString());
+		player.sendMessage(ChatFormatter.format("{ChatColor.GREEN} strenght positionned (%d)",s));
 	}
 
 	public void blockBreak(BlockBreakEvent event) {
@@ -101,7 +105,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
 			if (ball.block.equals(event.getBlock())) {
 				aBalls.remove(key);
-				getServer().broadcastMessage((new StringBuilder()).append(ChatColor.RED).append("The ball ").append(key).append(" has been automaticaly removed").toString());
+				getServer().broadcastMessage(ChatFormatter.format("{ChatColor.RED} The ball %s has been automaticaly removed",key));
 			}
 		}
 	}
@@ -110,10 +114,10 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		Block block = player.getTargetBlock(null, 50);
 		QDBlockBall ball = new QDBlockBall(block,player);
 		if (aBalls.containsKey(name)){
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" already exists.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} already exists.",name));
 		}else{
 			aBalls.put(name,ball);
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" added.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
 		}
 	}
 
@@ -126,18 +130,18 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = new QDBlockBall(block,player);
 			ball.setFlyingBall(flyingMode);
 			aBalls.put(name,ball);
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" added.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
 		}else{
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GREEN).append(" can not be added, not in front of AIR.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} can not be added, not in front of AIR.",name));
 		}
 	}
 
 	public void removeBall(Player player, String name) {
 		if (aBalls.containsKey(name)){
 			aBalls.remove(name);
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" removed.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} removed.",name));
 		}else{
-			player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Ball ").append(ChatColor.GOLD).append(name).append(ChatColor.GREEN).append(" does not exists.").toString());
+			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} does not exists.",name));
 		}
 	}
 
@@ -146,7 +150,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		String playerName = player.getName();
 		if (coolDowns.containsKey(playerName)){
 			if (coolDowns.get(playerName)+touchBallCooldownTime>currentMillis){
-				player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Player ").append(ChatColor.GOLD).append(playerName).append(ChatColor.RED).append(" in cooldown.").toString());
+				player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Player {ChatColor.GOLD}%s{ChatColor.GREEN} in cooldown",playerName));
 				return;
 			}
 			coolDowns.remove(playerName);
@@ -158,7 +162,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
 			if (ball.block.equals(block)){
 				if (ball.touchBall(player,strenght+2,2)){
-					player.sendMessage((new StringBuilder()).append(ChatColor.GREEN).append("Player ").append(ChatColor.GOLD).append(playerName).append(ChatColor.GREEN).append(" touch ball very fast.").toString());
+					player.sendMessage(ChatFormatter.format("{ChatColor.GOLD}%s{ChatColor.GREEN} touch ball very fast",playerName));
 					coolDowns.put(player.getName(),currentMillis);
 				}
 				break;

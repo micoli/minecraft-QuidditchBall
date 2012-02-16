@@ -3,6 +3,7 @@
 	<name>minecraft-QuidditchBall</name>
 	<comment></comment>
 	<projects>
+		<project>minecraft-utils</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
