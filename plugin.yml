@@ -4,4 +4,4 @@ version: 0.2
 description:
 commands:
     quidditchball:
-      description: main command
+      description: main command 
