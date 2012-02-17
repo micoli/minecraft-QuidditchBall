@@ -15,7 +15,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.micoli.minecraft.utils.ChatFormatter;
+import org.bukkit.util.Vector;
+import org.micoli.minecraft.utils.ChatFormater;
+import org.micoli.quidditchBall.QDObjectGoal.GoalOrientation;
+import org.micoli.quidditchBall.QDObjectGoal.GoalType;
 import org.micoli.quidditchBall.listeners.QDBlockListener;
 import org.micoli.quidditchBall.listeners.QDPlayerListener;
 import org.micoli.quidditchBall.managers.QDCommandManager;
@@ -25,6 +28,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private QDCommandManager myExecutor;
 	private static QuidditchBall instance;
 	private static Map<String,QDBlockBall> aBalls;
+	public static Map<String,QDObjectGoal> aGoals;
 	private static Map<String,Long> coolDowns;
 	private static String commandString = "quidditchball";
 	private static int strenght = 1;
@@ -45,7 +49,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public static void setComments(Player player, boolean active){
 		comments = active;
-		player.sendMessage(ChatFormatter.format("{ChatColor.RED} %s",(active?"comments activated":"comments desactived")));
+		player.sendMessage(ChatFormater.format("{ChatColor.RED} %s",(active?"comments activated":"comments desactived")));
 	}
 
 	public static boolean getComments(){
@@ -71,12 +75,13 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = getDescription();
-		log(ChatFormatter.format("%s version disabled",pdfFile.getName(),pdfFile.getVersion()));
+		log(ChatFormater.format("%s version disabled",pdfFile.getName(),pdfFile.getVersion()));
 	}
 
 	@Override
 	public void onEnable() {
 		aBalls					= new HashMap<String,QDBlockBall>();
+		aGoals					= new HashMap<String,QDObjectGoal>();
 		coolDowns				= new HashMap<String,Long>();
 		instance				= this;
 		myExecutor				= new QDCommandManager(this);
@@ -87,7 +92,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		pm.registerEvents(new QDBlockListener(this), this);
 		getCommand(getCommandString()).setExecutor(myExecutor);
 
-		log(ChatFormatter.format("%s version enabled",pdfFile.getName(),pdfFile.getVersion()));
+		log(ChatFormater.format("%s version enabled",pdfFile.getName(),pdfFile.getVersion()));
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -95,7 +100,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void setStrenght(Player player, int s) {
 		strenght = s;
-		player.sendMessage(ChatFormatter.format("{ChatColor.GREEN} strenght positionned (%d)",s));
+		player.sendMessage(ChatFormater.format("{ChatColor.GREEN} strenght positionned (%d)",s));
 	}
 
 	public void blockBreak(BlockBreakEvent event) {
@@ -105,8 +110,56 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
 			if (ball.block.equals(event.getBlock())) {
 				aBalls.remove(key);
-				getServer().broadcastMessage(ChatFormatter.format("{ChatColor.RED} The ball %s has been automaticaly removed",key));
+				getServer().broadcastMessage(ChatFormater.format("{ChatColor.RED} The ball %s has been automaticaly removed",key));
 			}
+		}
+
+		iterator = aGoals.keySet().iterator();
+		while(iterator.hasNext()){
+			String key =iterator.next();
+			QDObjectGoal goal = (QDObjectGoal) aGoals.get(key);
+			if (goal.centerBlock.equals(event.getBlock())) {
+				aGoals.remove(key);
+				getServer().broadcastMessage(ChatFormater.format("{ChatColor.RED} The goal %s has been automaticaly removed",key));
+			}
+		}
+	}
+
+	public void addGoal(Player player, GoalType type,int radiusOrWidth,int height){
+		String name=String.format("goal__%08d",aGoals.size());
+		int orientation = (int)(player.getLocation().getYaw() + 180) % 360;
+		GoalOrientation go = GoalOrientation.NS;
+		String dir="N";
+		if       (orientation < 45+0*90){
+			dir = "N";
+			go = GoalOrientation.NS;
+		}else if (orientation < 45+1*90){
+			dir = "E";
+			go = GoalOrientation.EW;
+		}else if (orientation < 45+2*90){
+			dir = "S";
+			go = GoalOrientation.NS;
+		}else if (orientation < 45+3*90){
+			dir = "W";
+			go = GoalOrientation.EW;
+		}
+		log(dir);
+		Block block;
+		switch (type){
+			case CIRCLE:
+				QDObjectGoal cGoal = new QDObjectGoal(GoalType.CIRCLE);
+				block = player.getWorld().getBlockAt(player.getLocation().add(new Vector(0,1,0)));
+				block.setType(Material.GLASS);
+				cGoal.setCircle(block,radiusOrWidth);
+				aGoals.put(name,cGoal);
+			break;
+			case RECTANGLE:
+				QDObjectGoal rGoal = new QDObjectGoal(GoalType.RECTANGLE);
+				block = player.getWorld().getBlockAt(player.getLocation());
+				block.setType(Material.GLASS);
+				rGoal.setRectangle(block,radiusOrWidth,height,go);
+				aGoals.put(name,rGoal);
+			break;
 		}
 	}
 
@@ -114,10 +167,10 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		Block block = player.getTargetBlock(null, 50);
 		QDBlockBall ball = new QDBlockBall(block,player);
 		if (aBalls.containsKey(name)){
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} already exists.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} already exists.",name));
 		}else{
 			aBalls.put(name,ball);
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
 		}
 	}
 
@@ -130,18 +183,18 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = new QDBlockBall(block,player);
 			ball.setFlyingBall(flyingMode);
 			aBalls.put(name,ball);
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
 		}else{
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} can not be added, not in front of AIR.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} can not be added, not in front of AIR.",name));
 		}
 	}
 
 	public void removeBall(Player player, String name) {
 		if (aBalls.containsKey(name)){
 			aBalls.remove(name);
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} removed.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} removed.",name));
 		}else{
-			player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} does not exists.",name));
+			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} does not exists.",name));
 		}
 	}
 
@@ -150,7 +203,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		String playerName = player.getName();
 		if (coolDowns.containsKey(playerName)){
 			if (coolDowns.get(playerName)+touchBallCooldownTime>currentMillis){
-				player.sendMessage(ChatFormatter.format("{ChatColor.GREEN}Player {ChatColor.GOLD}%s{ChatColor.GREEN} in cooldown",playerName));
+				player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Player {ChatColor.GOLD}%s{ChatColor.GREEN} in cooldown",playerName));
 				return;
 			}
 			coolDowns.remove(playerName);
@@ -162,7 +215,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
 			if (ball.block.equals(block)){
 				if (ball.touchBall(player,strenght+2,2)){
-					player.sendMessage(ChatFormatter.format("{ChatColor.GOLD}%s{ChatColor.GREEN} touch ball very fast",playerName));
+					player.sendMessage(ChatFormater.format("{ChatColor.GOLD}%s{ChatColor.GREEN} touch ball very fast",playerName));
 					coolDowns.put(player.getName(),currentMillis);
 				}
 				break;
