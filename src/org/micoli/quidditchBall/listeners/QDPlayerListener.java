@@ -1,9 +1,11 @@
 package org.micoli.quidditchBall.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.util.Vector;
 import org.micoli.quidditchBall.QuidditchBall;
 import org.bukkit.block.*;
 
@@ -25,6 +27,10 @@ public class QDPlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		plugin.playerMove(event.getPlayer());
+		Player player = event.getPlayer();
+		plugin.playerMove(player);
+//		Vector vel = player.getVelocity();
+//		Vector dir = player.getLocation().getDirection();
+//		player.setVelocity(new Vector(dir.getX() * 0.5, vel.getY() * 0, dir.getZ() * 0.5));
 	}
 }

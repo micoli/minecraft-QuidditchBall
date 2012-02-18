@@ -3,6 +3,8 @@ package org.micoli.quidditchBall.managers;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.micoli.minecraft.utils.ChatFormater;
 import org.micoli.quidditchBall.QDObjectGoal.GoalType;
@@ -32,6 +34,9 @@ public final class QDCommandManager implements CommandExecutor {
 						QuidditchBall.log("[QuidditchBall] Command " + args[0]);
 						if (args[0].equalsIgnoreCase("commentsOn")){
 							QuidditchBall.setComments(player, true);
+						}else if (args[0].equalsIgnoreCase("mount")){
+							Entity ent = player.getWorld().spawnCreature(player.getLocation(), CreatureType.CHICKEN);
+							player.setPassenger(ent);
 						}else if (args[0].equalsIgnoreCase("commentsOff")){
 							QuidditchBall.setComments(player, false);
 						}else if (args[0].equalsIgnoreCase("create")){
