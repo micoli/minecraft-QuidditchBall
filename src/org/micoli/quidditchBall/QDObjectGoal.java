@@ -10,6 +10,7 @@ public class QDObjectGoal {
 	int height;
 	int width;
 	GoalOrientation orientation;
+	double X,Y,Z;
 
 	public enum GoalType {
 		CIRCLE,RECTANGLE
@@ -33,6 +34,10 @@ public class QDObjectGoal {
 		this.width = width;
 		this.height = height;
 		this.orientation = orientation;
+		this.X = centerBlock.getX();
+		this.Y = centerBlock.getY();
+		this.Z = centerBlock.getZ();
+
 		QuidditchBall.log("facing "+orientation.toString());
 	}
 
@@ -44,8 +49,10 @@ public class QDObjectGoal {
 				}
 			break;
 			case RECTANGLE:
+				if (ball.xyzDistance(this.centerBlock.getLocation()) > Math.min(width,height)) {
+					return false;
+				}
 				try{
-					double X =this.centerBlock.getX(),Y =this.centerBlock.getY(),Z =this.centerBlock.getZ();
 					double X1=ball.block.getX()      ,Y1=ball.block.getY()      ,Z1=ball.block.getZ();
 					QuidditchBall.log(ChatFormater.format("%03f,%03f,%03f  %03f,%03f,%03f %d,%d",X,Y,Z,X1,Y1,Z1,this.height,this.width));
 					if (Y<=Y1 && Y1<=Y+this.height){
