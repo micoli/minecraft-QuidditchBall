@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/minecraft-utils"/>
-	<classpathentry kind="lib" path="/Applications/local.bukkit/bukkit-1.1-R5-20120213.193028-1.jar" sourcepath="/Users/home/Documents/workspace/Bukkit-Bukkit-1.1-R4-1-g594400d.zip"/>
+	<classpathentry kind="lib" path="/Users/omichaud/Documents/workspace/bukkit-1.1-R5-20120218.181512-2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

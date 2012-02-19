@@ -27,7 +27,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private static Logger logger = Logger.getLogger("Minecraft");
 	private QDCommandManager myExecutor;
 	private static QuidditchBall instance;
-	private static Map<String,QDBlockBall> aBalls;
+	private static Map<String,QDObjectBall> aBalls;
 	public static Map<String,QDObjectGoal> aGoals;
 	private static Map<String,Long> coolDowns;
 	private static String commandString = "quidditchball";
@@ -80,7 +80,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	@Override
 	public void onEnable() {
-		aBalls					= new HashMap<String,QDBlockBall>();
+		aBalls					= new HashMap<String,QDObjectBall>();
 		aGoals					= new HashMap<String,QDObjectGoal>();
 		coolDowns				= new HashMap<String,Long>();
 		instance				= this;
@@ -107,7 +107,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		Iterator<String> iterator = aBalls.keySet().iterator();
 		while(iterator.hasNext()){
 			String key =iterator.next();
-			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
+			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
 			if (ball.block.equals(event.getBlock())) {
 				aBalls.remove(key);
 				getServer().broadcastMessage(ChatFormater.format("{ChatColor.RED} The ball %s has been automaticaly removed",key));
@@ -132,16 +132,16 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		String dir="N";
 		if       (orientation < 45+0*90){
 			dir = "N";
-			go = GoalOrientation.NS;
+			go = GoalOrientation.EW;
 		}else if (orientation < 45+1*90){
 			dir = "E";
-			go = GoalOrientation.EW;
+			go = GoalOrientation.NS;
 		}else if (orientation < 45+2*90){
 			dir = "S";
-			go = GoalOrientation.NS;
+			go = GoalOrientation.EW;
 		}else if (orientation < 45+3*90){
 			dir = "W";
-			go = GoalOrientation.EW;
+			go = GoalOrientation.NS;
 		}
 		log(dir);
 		Block block;
@@ -165,7 +165,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 
 	public void addBall(Player player, String name) {
 		Block block = player.getTargetBlock(null, 50);
-		QDBlockBall ball = new QDBlockBall(block,player);
+		QDObjectBall ball = new QDObjectBall(block,player);
 		if (aBalls.containsKey(name)){
 			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} already exists.",name));
 		}else{
@@ -177,10 +177,15 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 	public void createBall(Player player,boolean flyingMode) {
 		String name=String.format("ball__%08d",aBalls.size());
 		List<Block> lBlock = player.getLineOfSight(null, 2);
-		Block block = lBlock.get(0);
+		Block block;
+		if(flyingMode){
+			block = lBlock.get(0);
+		}else{
+			block = lBlock.get(0).getRelative(0, -1, 0);
+		}
 		if (block.getType() == Material.AIR){
 			block.setType(Material.PUMPKIN);
-			QDBlockBall ball = new QDBlockBall(block,player);
+			QDObjectBall ball = new QDObjectBall(block,player);
 			ball.setFlyingBall(flyingMode);
 			aBalls.put(name,ball);
 			player.sendMessage(ChatFormater.format("{ChatColor.GREEN}Ball {ChatColor.GOLD}%s{ChatColor.GREEN} added.",name));
@@ -212,7 +217,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		Iterator<String> iterator = aBalls.keySet().iterator();
 		while(iterator.hasNext()){
 			String key =iterator.next();
-			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
+			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
 			if (ball.block.equals(block)){
 				if (ball.touchBall(player,strenght+2,2)){
 					player.sendMessage(ChatFormater.format("{ChatColor.GOLD}%s{ChatColor.GREEN} touch ball very fast",playerName));
@@ -227,7 +232,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		Iterator<String> iterator = aBalls.keySet().iterator();
 		while(iterator.hasNext()){
 			String key =iterator.next();
-			QDBlockBall ball = (QDBlockBall) aBalls.get(key);
+			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
 			ball.touchBall(player,strenght,1);
 		}
 
