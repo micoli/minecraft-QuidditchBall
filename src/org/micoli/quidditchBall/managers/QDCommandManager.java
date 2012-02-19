@@ -13,7 +13,7 @@ import org.micoli.quidditchBall.QuidditchBall;
 public final class QDCommandManager implements CommandExecutor {
 	private QuidditchBall plugin;
 
-	public QDCommandManager(QuidditchBall plugin){
+	public QDCommandManager(QuidditchBall plugin) {
 		this.plugin = plugin;
 	}
 
@@ -26,34 +26,34 @@ public final class QDCommandManager implements CommandExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		try{
+		try {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
 				if (command.getName().equalsIgnoreCase(QuidditchBall.getCommandString()))
 					if (args.length > 0) {
 						QuidditchBall.log("[QuidditchBall] Command " + args[0]);
-						if (args[0].equalsIgnoreCase("commentsOn")){
+						if (args[0].equalsIgnoreCase("commentsOn")) {
 							QuidditchBall.setComments(player, true);
-						}else if (args[0].equalsIgnoreCase("mount")){
+						} else if (args[0].equalsIgnoreCase("mount")) {
 							Entity ent = player.getWorld().spawnCreature(player.getLocation(), CreatureType.CHICKEN);
 							player.setPassenger(ent);
-						}else if (args[0].equalsIgnoreCase("commentsOff")){
+						} else if (args[0].equalsIgnoreCase("commentsOff")) {
 							QuidditchBall.setComments(player, false);
-						}else if (args[0].equalsIgnoreCase("create")){
-							plugin.createBall(player,false);
-						}else if (args[0].equalsIgnoreCase("create3D")){
-							plugin.createBall(player,true);
-						}else if (args[0].equalsIgnoreCase("remove")){
+						} else if (args[0].equalsIgnoreCase("create")) {
+							plugin.createBall(player, false);
+						} else if (args[0].equalsIgnoreCase("create3D")) {
+							plugin.createBall(player, true);
+						} else if (args[0].equalsIgnoreCase("remove")) {
 							plugin.removeBall(player, args[1]);
-						}else if (args[0].equalsIgnoreCase("convert")){
-							plugin.addBall(player,args[1]);
-						}else if (args[0].equalsIgnoreCase("strenght")){
+						} else if (args[0].equalsIgnoreCase("convert")) {
+							plugin.addBall(player, args[1]);
+						} else if (args[0].equalsIgnoreCase("strenght")) {
 							plugin.setStrenght(player, Integer.parseInt(args[1]));
-						}else if (args[0].equalsIgnoreCase("createCircleGoal")){
-							plugin.addGoal(player,GoalType.CIRCLE, Integer.parseInt(args[1]),0);
-						}else if (args[0].equalsIgnoreCase("createRectangleGoal")){
-							plugin.addGoal(player,GoalType.RECTANGLE, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-						}else{
+						} else if (args[0].equalsIgnoreCase("createCircleGoal")) {
+							plugin.addGoal(player, GoalType.CIRCLE, Integer.parseInt(args[1]), 0);
+						} else if (args[0].equalsIgnoreCase("createRectangleGoal")) {
+							plugin.addGoal(player, GoalType.RECTANGLE, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+						} else {
 							player.sendMessage(ChatFormater.format("{ChatColor.RED} command unknown"));
 						}
 					} else {
@@ -64,7 +64,7 @@ public final class QDCommandManager implements CommandExecutor {
 			}
 			return false;
 		} catch (Exception ex) {
-			QuidditchBall.log(ChatFormater.format("[QuidditchBall] Command failure: %s",ex.getMessage()));
+			QuidditchBall.log(ChatFormater.format("[QuidditchBall] Command failure: %s", ex.getMessage()));
 		}
 
 		return false;

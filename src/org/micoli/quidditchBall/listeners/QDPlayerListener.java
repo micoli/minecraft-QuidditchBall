@@ -16,11 +16,11 @@ public class QDPlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event){
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		Action action = event.getAction();
 		if (action == Action.RIGHT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();
-			plugin.playerTouch(event.getPlayer(),block);
+			plugin.playerTouch(event.getPlayer(), block);
 		}
 	}
 
@@ -28,8 +28,5 @@ public class QDPlayerListener implements Listener {
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		plugin.playerMove(player);
-//		Vector vel = player.getVelocity();
-//		Vector dir = player.getLocation().getDirection();
-//		player.setVelocity(new Vector(dir.getX() * 0.5, vel.getY() * 0, dir.getZ() * 0.5));
 	}
 }

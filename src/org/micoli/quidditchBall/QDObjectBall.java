@@ -18,7 +18,7 @@ public class QDObjectBall {
 	boolean debug = false;
 	private boolean flyingBall = false;
 	private int serverMaxHeight = 128;
-	private SimpleDateFormat hourFmt= new SimpleDateFormat("HH:mm:ss");
+	private SimpleDateFormat hourFmt = new SimpleDateFormat("HH:mm:ss");
 
 	public QDObjectBall(Block b, Player player) {
 		block = b;
@@ -69,10 +69,7 @@ public class QDObjectBall {
 	 * @return
 	 */
 	public int xyzDistance(Location location) {
-		return (int) Math.max(
-				Math.max(Math.abs(location.getX() - this.block.getX()),
-						Math.abs(location.getY() - this.block.getY())),
-				Math.abs(location.getZ() - this.block.getZ()));
+		return (int) Math.max(Math.max(Math.abs(location.getX() - this.block.getX()), Math.abs(location.getY() - this.block.getY())), Math.abs(location.getZ() - this.block.getZ()));
 	}
 
 	public boolean touchBall(Player player, int strenght, int distance) {
@@ -95,24 +92,14 @@ public class QDObjectBall {
 
 		double x = vector.getX(), y = vector.getY(), z = vector.getZ();
 
-		vector = new Vector(
-				-1 * (x == 0 ? 0 : x / Math.abs(x)),
-				-1 * (y == 0 ? 0 : y / Math.abs(y)),
-				-1 * (z == 0 ? 0 : z / Math.abs(z)));
+		vector = new Vector(-1 * (x == 0 ? 0 : x / Math.abs(x)), -1 * (y == 0 ? 0 : y / Math.abs(y)), -1 * (z == 0 ? 0 : z / Math.abs(z)));
 
 		if (debug) {
-			QuidditchBall.sendComments(
-					player,
-					"distance" + String.format("%04.2f", ballPlayerDistance)
-							+ "->" + vector.toString() + " "
-							+ Double.toString(strenght), false);
+			QuidditchBall.sendComments(player, "distance" + String.format("%04.2f", ballPlayerDistance) + "->" + vector.toString() + " " + Double.toString(strenght), false);
 		}
 
-		Block target = this.block.getRelative((int) vector.getX() * strenght,
-				isFlyingBall() ? (int) vector.getY() * strenght : 0,
-				(int) vector.getZ() * strenght);
-		if ((isFlyingBall() || playerBlock.getY() == this.block.getY())
-				&& (target.getType() == Material.AIR)) {
+		Block target = this.block.getRelative((int) vector.getX() * strenght, isFlyingBall() ? (int) vector.getY() * strenght : 0, (int) vector.getZ() * strenght);
+		if ((isFlyingBall() || playerBlock.getY() == this.block.getY()) && (target.getType() == Material.AIR)) {
 			if (isFlyingBall()) {
 				if (target.getY() >= serverMaxHeight) {
 					QuidditchBall.sendComments(player, "too high", false);
@@ -124,23 +111,14 @@ public class QDObjectBall {
 				}
 			}
 			if (debug) {
-				QuidditchBall.sendComments(player, this.block.getLocation()
-						.toString() + " " + target.getLocation().toString(),
-						false);
+				QuidditchBall.sendComments(player, this.block.getLocation().toString() + " " + target.getLocation().toString(), false);
 			}
 			switchBlock(target);
 			if (isInGoal()) {
 				Date now = new Date();
-				QuidditchBall
-						.sendComments(
-								player,
-								ChatFormater
-								.format("{ChatColor.AQUA}And it's a goaaaalllll from {ChatColor.GOLD}%s{ChatColor.AQUA} at %s",
-										player.getName(),hourFmt.format(now)), true);
+				QuidditchBall.sendComments(player, ChatFormater.format("{ChatColor.AQUA}And it's a goaaaalllll from {ChatColor.GOLD}%s{ChatColor.AQUA} at %s", player.getName(), hourFmt.format(now)), true);
 			}
-			QuidditchBall.sendComments(player, ChatFormater.format(
-					"{ChatColor.GOLD}%s{ChatColor.AQUA} touch the ball.",
-					player.getName()), true);
+			QuidditchBall.sendComments(player, ChatFormater.format("{ChatColor.GOLD}%s{ChatColor.AQUA} touch the ball.", player.getName()), true);
 			return true;
 		}
 		return false;
