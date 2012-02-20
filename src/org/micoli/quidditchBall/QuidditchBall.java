@@ -150,7 +150,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDObjectGoal cGoal = new QDObjectGoal(GoalType.CIRCLE);
 			block = player.getWorld().getBlockAt(player.getLocation().add(new Vector(0, 1, 0)));
 			block.setType(Material.GLASS);
-			cGoal.setCircle(block, radiusOrWidth);
+			cGoal.setCircle(block, radiusOrWidth,go);
 			aGoals.put(name, cGoal);
 			break;
 		case RECTANGLE:
