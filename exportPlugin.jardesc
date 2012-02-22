@@ -12,7 +12,6 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <file path="/minecraft-utils/.classpath"/>
-        <javaElement handleIdentifier="=minecraft-QuidditchBall/src"/>
         <javaElement handleIdentifier="=minecraft-utils/src"/>
         <file path="/minecraft-utils/.project"/>
         <file path="/minecraft-QuidditchBall/plugin.yml"/>
