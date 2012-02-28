@@ -10,7 +10,7 @@
 	<repositories>
 		<repository>
 			<id>org.bukkit</id>
-			<url>http://repo.bukkit.org/content/groups</url>
+			<url>http://repo.bukkit.org/content/groups/public</url>
 		</repository>
 	</repositories>
 	<scm>
