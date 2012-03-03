@@ -146,19 +146,19 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		log(dir);
 		Block block;
 		switch (type) {
-		case CIRCLE:
-			QDObjectGoal cGoal = new QDObjectGoal(GoalType.CIRCLE);
-			block = player.getWorld().getBlockAt(player.getLocation().add(new Vector(0, 1, 0)));
-			block.setType(Material.GLASS);
-			cGoal.setCircle(block, radiusOrWidth,go);
-			aGoals.put(name, cGoal);
+			case CIRCLE:
+				QDObjectGoal cGoal = new QDObjectGoal(GoalType.CIRCLE);
+				block = player.getWorld().getBlockAt(player.getLocation().add(new Vector(0, 1, 0)));
+				block.setType(Material.GLASS);
+				cGoal.setCircle(block, radiusOrWidth,go);
+				aGoals.put(name, cGoal);
 			break;
-		case RECTANGLE:
-			QDObjectGoal rGoal = new QDObjectGoal(GoalType.RECTANGLE);
-			block = player.getWorld().getBlockAt(player.getLocation());
-			block.setType(Material.GLASS);
-			rGoal.setRectangle(block, radiusOrWidth, height, go);
-			aGoals.put(name, rGoal);
+			case RECTANGLE:
+				QDObjectGoal rGoal = new QDObjectGoal(GoalType.RECTANGLE);
+				block = player.getWorld().getBlockAt(player.getLocation());
+				block.setType(Material.GLASS);
+				rGoal.setRectangle(block, radiusOrWidth, height, go);
+				aGoals.put(name, rGoal);
 			break;
 		}
 	}
@@ -235,6 +235,5 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
 			ball.touchBall(player, strenght, 1);
 		}
-
 	}
 }
