@@ -1,5 +1,5 @@
 name: QuidditchBall
-main: org.micoli.quidditchBall.QuidditchBall
+main: org.micoli.minecraft.quidditchBall.QuidditchBall
 version: 0.3
 description:
 commands:
