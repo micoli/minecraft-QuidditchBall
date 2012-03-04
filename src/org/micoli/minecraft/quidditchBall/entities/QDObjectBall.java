@@ -1,4 +1,4 @@
-package org.micoli.quidditchBall;
+package org.micoli.minecraft.quidditchBall.entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,10 +9,19 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.micoli.minecraft.quidditchBall.QuidditchBall;
 import org.micoli.minecraft.utils.ChatFormater;
 
 public class QDObjectBall {
 	Block block;
+	public Block getBlock() {
+		return block;
+	}
+
+	public void setBlock(Block block) {
+		this.block = block;
+	}
+
 	static QuidditchBall plugin;
 	boolean gravity = true;
 	boolean debug = false;

@@ -1,4 +1,4 @@
-package org.micoli.quidditchBall;
+package org.micoli.minecraft.quidditchBall;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,12 +16,14 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import org.micoli.minecraft.quidditchBall.entities.QDObjectBall;
+import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal;
+import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalOrientation;
+import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalType;
+import org.micoli.minecraft.quidditchBall.listeners.QDBlockListener;
+import org.micoli.minecraft.quidditchBall.listeners.QDPlayerListener;
+import org.micoli.minecraft.quidditchBall.managers.QDCommandManager;
 import org.micoli.minecraft.utils.ChatFormater;
-import org.micoli.quidditchBall.QDObjectGoal.GoalOrientation;
-import org.micoli.quidditchBall.QDObjectGoal.GoalType;
-import org.micoli.quidditchBall.listeners.QDBlockListener;
-import org.micoli.quidditchBall.listeners.QDPlayerListener;
-import org.micoli.quidditchBall.managers.QDCommandManager;
 
 public class QuidditchBall extends JavaPlugin implements ActionListener {
 	private static Logger logger = Logger.getLogger("Minecraft");
@@ -108,7 +110,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
-			if (ball.block.equals(event.getBlock())) {
+			if (ball.getBlock().equals(event.getBlock())) {
 				aBalls.remove(key);
 				getServer().broadcastMessage(ChatFormater.format("{ChatColor.RED} The ball %s has been automaticaly removed", key));
 			}
@@ -118,7 +120,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			QDObjectGoal goal = (QDObjectGoal) aGoals.get(key);
-			if (goal.centerBlock.equals(event.getBlock())) {
+			if (goal.getCenterBlock().equals(event.getBlock())) {
 				aGoals.remove(key);
 				getServer().broadcastMessage(ChatFormater.format("{ChatColor.RED} The goal %s has been automaticaly removed", key));
 			}
@@ -218,7 +220,7 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
-			if (ball.block.equals(block)) {
+			if (ball.getBlock().equals(block)) {
 				if (ball.touchBall(player, strenght + 2, 2)) {
 					player.sendMessage(ChatFormater.format("{ChatColor.GOLD}%s{ChatColor.GREEN} touch ball very fast", playerName));
 					coolDowns.put(player.getName(), currentMillis);

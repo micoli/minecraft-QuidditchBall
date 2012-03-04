@@ -1,6 +1,7 @@
-package org.micoli.quidditchBall;
+package org.micoli.minecraft.quidditchBall.entities;
 
 import org.bukkit.block.Block;
+import org.micoli.minecraft.quidditchBall.QuidditchBall;
 import org.micoli.minecraft.utils.ChatFormater;
 
 public class QDObjectGoal {
@@ -40,6 +41,14 @@ public class QDObjectGoal {
 		this.Z = centerBlock.getZ();
 
 		QuidditchBall.log("facing " + orientation.toString());
+	}
+
+	public Block getCenterBlock() {
+		return centerBlock;
+	}
+
+	public void setCenterBlock(Block centerBlock) {
+		this.centerBlock = centerBlock;
 	}
 
 	public boolean isBallInside(QDObjectBall ball) {

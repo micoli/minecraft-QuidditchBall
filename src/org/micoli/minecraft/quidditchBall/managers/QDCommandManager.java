@@ -1,12 +1,12 @@
-package org.micoli.quidditchBall.managers;
+package org.micoli.minecraft.quidditchBall.managers;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.micoli.minecraft.quidditchBall.QuidditchBall;
+import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalType;
 import org.micoli.minecraft.utils.ChatFormater;
-import org.micoli.quidditchBall.QDObjectGoal.GoalType;
-import org.micoli.quidditchBall.QuidditchBall;
 
 public final class QDCommandManager implements CommandExecutor {
 	private QuidditchBall plugin;
