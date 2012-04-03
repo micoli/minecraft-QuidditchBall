@@ -12,42 +12,86 @@ import org.bukkit.util.Vector;
 import org.micoli.minecraft.quidditchBall.QuidditchBall;
 import org.micoli.minecraft.utils.ChatFormater;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class QDObjectBall.
+ */
 public class QDObjectBall {
+	
+	/** The block. */
 	Block block;
+	
+	/**
+	 * Gets the block.
+	 *
+	 * @return the block
+	 */
 	public Block getBlock() {
 		return block;
 	}
 
+	/**
+	 * Sets the block.
+	 *
+	 * @param block the new block
+	 */
 	public void setBlock(Block block) {
 		this.block = block;
 	}
 
+	/** The plugin. */
 	static QuidditchBall plugin;
+	
+	/** The gravity. */
 	boolean gravity = true;
+	
+	/** The debug. */
 	boolean debug = false;
+	
+	/** The flying ball. */
 	private boolean flyingBall = false;
+	
+	/** The server max height. */
 	private int serverMaxHeight = 128;
+	
+	/** The hour fmt. */
 	private SimpleDateFormat hourFmt = new SimpleDateFormat("HH:mm:ss");
 
+	/**
+	 * Instantiates a new qD object ball.
+	 *
+	 * @param b the b
+	 * @param player the player
+	 */
 	public QDObjectBall(Block b, Player player) {
 		block = b;
 		plugin = QuidditchBall.getInstance();
 		serverMaxHeight = player.getWorld().getMaxHeight() - 3;
 	}
 
+	/**
+	 * Checks if is flying ball.
+	 *
+	 * @return true, if is flying ball
+	 */
 	public boolean isFlyingBall() {
 		return flyingBall;
 	}
 
+	/**
+	 * Sets the flying ball.
+	 *
+	 * @param flyingBall the new flying ball
+	 */
 	public void setFlyingBall(boolean flyingBall) {
 		this.flyingBall = flyingBall;
 		gravity = !flyingBall;
 	}
 
 	/**
-	 * switch the current ball block and the block argument
+	 * switch the current ball block and the block argument.
 	 *
-	 * @param block
+	 * @param block the block
 	 */
 	public void switchBlock(Block block) {
 		block.setType(this.block.getType());
@@ -61,6 +105,11 @@ public class QDObjectBall {
 		}
 	}
 
+	/**
+	 * Checks if is in goal.
+	 *
+	 * @return true, if is in goal
+	 */
 	boolean isInGoal() {
 		Iterator<String> iterator = QuidditchBall.aGoals.keySet().iterator();
 		while (iterator.hasNext()) {
@@ -72,15 +121,23 @@ public class QDObjectBall {
 	}
 
 	/**
-	 * calculate a raw distance between the ball and the Location
+	 * calculate a raw distance between the ball and the Location.
 	 *
-	 * @param location
-	 * @return
+	 * @param location the location
+	 * @return the int
 	 */
 	public int xyzDistance(Location location) {
 		return (int) Math.max(Math.max(Math.abs(location.getX() - this.block.getX()), Math.abs(location.getY() - this.block.getY())), Math.abs(location.getZ() - this.block.getZ()));
 	}
 
+	/**
+	 * Touch ball.
+	 *
+	 * @param player the player
+	 * @param strenght the strenght
+	 * @param distance the distance
+	 * @return true, if successful
+	 */
 	public boolean touchBall(Player player, int strenght, int distance) {
 		Block playerBlock = player.getWorld().getBlockAt(player.getLocation());
 		Location locPlayer = playerBlock.getLocation();

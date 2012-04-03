@@ -8,13 +8,27 @@ import org.micoli.minecraft.quidditchBall.QuidditchBall;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalType;
 import org.micoli.minecraft.utils.ChatFormater;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class QDCommandManager.
+ */
 public final class QDCommandManager implements CommandExecutor {
+	
+	/** The plugin. */
 	private QuidditchBall plugin;
 
+	/**
+	 * Instantiates a new qD command manager.
+	 *
+	 * @param plugin the plugin
+	 */
 	public QDCommandManager(QuidditchBall plugin) {
 		this.plugin = plugin;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		try {

@@ -2,11 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.micoli.minecraft</groupId>
-	<artifactId>QuidditchBall</artifactId>
+	<artifactId>morg-QuidditchBall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>QuidditchBall</name>
 	<packaging>jar</packaging>
 	<description>QuidditchBall ball for minecraft</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<repositories>
 		<repository>
 			<id>org.bukkit</id>
@@ -26,12 +29,12 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.1-R4-SNAPSHOT</version>
+			<version>1.2.4-R0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.micoli.minecraft</groupId>
 			<artifactId>morg-utils</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -77,11 +80,8 @@
 							<addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
 							<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
 						</manifest>
-						<!--
-						<manifestEntries>
-							<Class-Path>utils-0.0.1-SNAPSHOT.jar</Class-Path>
-						</manifestEntries>
-						-->
+						<!-- <manifestEntries> <Class-Path>utils-0.0.1-SNAPSHOT.jar</Class-Path> 
+							</manifestEntries> -->
 					</archive>
 				</configuration>
 			</plugin>
@@ -131,10 +131,23 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>exec-maven-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>/Applications/local.bukkit/reloadPlugin.sh</executable>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 </project>

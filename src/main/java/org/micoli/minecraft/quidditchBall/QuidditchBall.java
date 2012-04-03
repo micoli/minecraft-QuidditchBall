@@ -1,21 +1,17 @@
 package org.micoli.minecraft.quidditchBall;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import org.micoli.minecraft.bukkit.QDBukkitPlugin;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectBall;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalOrientation;
@@ -25,86 +21,79 @@ import org.micoli.minecraft.quidditchBall.listeners.QDPlayerListener;
 import org.micoli.minecraft.quidditchBall.managers.QDCommandManager;
 import org.micoli.minecraft.utils.ChatFormater;
 
-public class QuidditchBall extends JavaPlugin implements ActionListener {
-	private static Logger logger = Logger.getLogger("Minecraft");
-	private QDCommandManager myExecutor;
-	private static QuidditchBall instance;
+// TODO: Auto-generated Javadoc
+/**
+ * The Class QuidditchBall.
+ */
+public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
+	
+	/** The executor. */
+	protected QDCommandManager executor;
+	
+	/** The instance. */
+	protected static QuidditchBall instance;
+	
+	/** The a balls. */
 	private static Map<String, QDObjectBall> aBalls;
+	
+	/** The a goals. */
 	public static Map<String, QDObjectGoal> aGoals;
+	
+	/** The cool downs. */
 	private static Map<String, Long> coolDowns;
-	private static String commandString = "quidditchball";
+	
+	/** The strenght. */
 	private static int strenght = 1;
+	
+	/** The touch ball cooldown time. */
 	private static int touchBallCooldownTime = 3000;
-	private static boolean comments = true;
-	private static String lastMsg = "";
 
 	/**
+	 * Gets the single instance of QuidditchBall.
+	 *
 	 * @return the instance
 	 */
 	public static QuidditchBall getInstance() {
 		return instance;
 	}
 
-	public static String getCommandString() {
-		return commandString;
-	}
-
-	public static void setComments(Player player, boolean active) {
-		comments = active;
-		player.sendMessage(ChatFormater.format("{ChatColor.RED} %s", (active ? "comments activated" : "comments desactived")));
-	}
-
-	public static boolean getComments() {
-		return comments;
-	}
-
-	public static void log(String str) {
-		logger.info(str);
-	}
-
-	public static void sendComments(Player player, String text, boolean global) {
-		if (getComments()) {
-			if (!QuidditchBall.lastMsg.equalsIgnoreCase(text)) {
-				QuidditchBall.lastMsg = text + "";
-				if (global) {
-					getInstance().getServer().broadcastMessage(text);
-				} else {
-					player.sendMessage(text);
-				}
-			}
-		}
-	}
-
-	public void onDisable() {
-		PluginDescriptionFile pdfFile = getDescription();
-		log(ChatFormater.format("%s version disabled", pdfFile.getName(), pdfFile.getVersion()));
-	}
-
+	/* (non-Javadoc)
+	 * @see org.micoli.minecraft.bukkit.QDBukkitPlugin#onEnable()
+	 */
 	@Override
 	public void onEnable() {
-		aBalls = new HashMap<String, QDObjectBall>();
-		aGoals = new HashMap<String, QDObjectGoal>();
-		coolDowns = new HashMap<String, Long>();
-		instance = this;
-		myExecutor = new QDCommandManager(this);
-		PluginManager pm = getServer().getPluginManager();
-		PluginDescriptionFile pdfFile = getDescription();
+		super.onEnable();
+		
+		commandString		= "quidditchball";
+		aBalls				= new HashMap<String, QDObjectBall>();
+		aGoals				= new HashMap<String, QDObjectGoal>();
+		coolDowns			= new HashMap<String, Long>();
+		instance			= this;
+		executor			= new QDCommandManager(this);
 
 		pm.registerEvents(new QDPlayerListener(this), this);
 		pm.registerEvents(new QDBlockListener(this), this);
-		getCommand(getCommandString()).setExecutor(myExecutor);
+		getCommand(getCommandString()).setExecutor(executor);
 
 		log(ChatFormater.format("%s version enabled", pdfFile.getName(), pdfFile.getVersion()));
 	}
 
-	public void actionPerformed(ActionEvent event) {
-	}
-
+	/**
+	 * Sets the strenght.
+	 *
+	 * @param player the player
+	 * @param s the s
+	 */
 	public void setStrenght(Player player, int s) {
 		strenght = s;
 		player.sendMessage(ChatFormater.format("{ChatColor.GREEN} strenght positionned (%d)", s));
 	}
 
+	/**
+	 * Block break.
+	 *
+	 * @param event the event
+	 */
 	public void blockBreak(BlockBreakEvent event) {
 		Iterator<String> iterator = aBalls.keySet().iterator();
 		while (iterator.hasNext()) {
@@ -127,6 +116,14 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Adds the goal.
+	 *
+	 * @param player the player
+	 * @param type the type
+	 * @param radiusOrWidth the radius or width
+	 * @param height the height
+	 */
 	public void addGoal(Player player, GoalType type, int radiusOrWidth, int height) {
 		String name = String.format("goal__%08d", aGoals.size());
 		int orientation = (int) (player.getLocation().getYaw() + 180) % 360;
@@ -165,6 +162,12 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Adds the ball.
+	 *
+	 * @param player the player
+	 * @param name the name
+	 */
 	public void addBall(Player player, String name) {
 		Block block = player.getTargetBlock(null, 50);
 		QDObjectBall ball = new QDObjectBall(block, player);
@@ -176,6 +179,12 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Creates the ball.
+	 *
+	 * @param player the player
+	 * @param flyingMode the flying mode
+	 */
 	public void createBall(Player player, boolean flyingMode) {
 		String name = String.format("ball__%08d", aBalls.size());
 		List<Block> lBlock = player.getLineOfSight(null, 2);
@@ -196,6 +205,12 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Removes the ball.
+	 *
+	 * @param player the player
+	 * @param name the name
+	 */
 	public void removeBall(Player player, String name) {
 		if (aBalls.containsKey(name)) {
 			aBalls.remove(name);
@@ -205,6 +220,12 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Player touch.
+	 *
+	 * @param player the player
+	 * @param block the block
+	 */
 	public void playerTouch(Player player, Block block) {
 		long currentMillis = System.currentTimeMillis();
 		String playerName = player.getName();
@@ -230,6 +251,11 @@ public class QuidditchBall extends JavaPlugin implements ActionListener {
 		}
 	}
 
+	/**
+	 * Player move.
+	 *
+	 * @param player the player
+	 */
 	public void playerMove(Player player) {
 		Iterator<String> iterator = aBalls.keySet().iterator();
 		while (iterator.hasNext()) {
