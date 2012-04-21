@@ -92,7 +92,7 @@ public class QDObjectGoal {
 		this.Y = centerBlock.getY();
 		this.Z = centerBlock.getZ();
 
-		QuidditchBall.log("facing " + orientation.toString());
+		QuidditchBall.getInstance().logger.log("facing " + orientation.toString());
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class QDObjectGoal {
 	 */
 	public boolean isBallInside(QDObjectBall ball) {
 		double X1 = ball.block.getX(), Y1 = ball.block.getY(), Z1 = ball.block.getZ();
-		QuidditchBall.log(this.orientation.toString());
+		QuidditchBall.getInstance().logger.log(this.orientation.toString());
 		switch (this.type) {
 			case CIRCLE:
 				if (ball.xyzDistance(this.centerBlock.getLocation()) <= this.radius ){//&& (this.orientation==GoalOrientation.NS?X == X1:Z == Z1)) {
@@ -133,7 +133,7 @@ public class QDObjectGoal {
 					return false;
 				}
 				try {
-					QuidditchBall.log(ChatFormater.format("%03f,%03f,%03f  %03f,%03f,%03f %d,%d", X, Y, Z, X1, Y1, Z1, this.height, this.width));
+					QuidditchBall.getInstance().logger.log(ChatFormater.format("%03f,%03f,%03f  %03f,%03f,%03f %d,%d", X, Y, Z, X1, Y1, Z1, this.height, this.width));
 					if (Y <= Y1 && Y1 <= Y + this.height) {
 						switch (this.orientation) {
 							case NS:
@@ -149,7 +149,7 @@ public class QDObjectGoal {
 						}
 					}
 				} catch (Exception ex) {
-					QuidditchBall.log(ChatFormater.format("[QuidditchBall] Command failure: %s", ex.getMessage()));
+					QuidditchBall.getInstance().logger.log(ChatFormater.format("[QuidditchBall] Command failure: %s", ex.getMessage()));
 				}
 			break;
 		}

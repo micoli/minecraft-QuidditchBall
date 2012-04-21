@@ -34,13 +34,13 @@ public final class QDCommandManager implements CommandExecutor {
 		try {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
-				if (command.getName().equalsIgnoreCase(QuidditchBall.getCommandString()))
+				if (command.getName().equalsIgnoreCase(plugin.getCommandString()))
 					if (args.length > 0) {
-						QuidditchBall.log("[QuidditchBall] Command " + args[0]);
+						plugin.logger.log("[QuidditchBall] Command " + args[0]);
 						if (args[0].equalsIgnoreCase("commentsOn")) {
-							QuidditchBall.setComments(player, true);
+							plugin.setComments(player, true);
 						} else if (args[0].equalsIgnoreCase("commentsOff")) {
-							QuidditchBall.setComments(player, false);
+							plugin.setComments(player, false);
 						} else if (args[0].equalsIgnoreCase("create")) {
 							plugin.createBall(player, false);
 						} else if (args[0].equalsIgnoreCase("create3D")) {
@@ -62,11 +62,11 @@ public final class QDCommandManager implements CommandExecutor {
 						player.sendMessage(ChatFormater.format("{ChatColor.RED} Need more arguments"));
 					}
 			} else {
-				QuidditchBall.log(ChatFormater.format("[QuidditchBall] Pushball requires you to be a Player"));
+				plugin.logger.log(ChatFormater.format("[QuidditchBall] Pushball requires you to be a Player"));
 			}
 			return false;
 		} catch (Exception ex) {
-			QuidditchBall.log(ChatFormater.format("[QuidditchBall] Command failure: %s", ex.getMessage()));
+			plugin.logger.log(ChatFormater.format("[QuidditchBall] Command failure: %s", ex.getMessage()));
 		}
 
 		return false;

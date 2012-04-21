@@ -28,8 +28,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
+			<artifactId>craftbukkit</artifactId>
 			<version>1.2.4-R0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lennardf1989</groupId>
+			<artifactId>bukkitex</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.micoli.minecraft</groupId>
@@ -60,6 +65,15 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
@@ -80,8 +94,6 @@
 							<addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
 							<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
 						</manifest>
-						<!-- <manifestEntries> <Class-Path>utils-0.0.1-SNAPSHOT.jar</Class-Path> 
-							</manifestEntries> -->
 					</archive>
 				</configuration>
 			</plugin>
@@ -100,6 +112,7 @@
 							<artifactSet>
 								<includes>
 									<include>org.micoli.minecraft:morg-utils:jar:*</include>
+									<include>com.lennardf1989:bukkitex:jar:*</include>
 								</includes>
 							</artifactSet>
 							<filters>
@@ -147,7 +160,6 @@
 					<executable>/Applications/local.bukkit/reloadPlugin.sh</executable>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>

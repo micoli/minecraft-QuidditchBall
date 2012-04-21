@@ -75,7 +75,7 @@ public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
 		pm.registerEvents(new QDBlockListener(this), this);
 		getCommand(getCommandString()).setExecutor(executor);
 
-		log(ChatFormater.format("%s version enabled", pdfFile.getName(), pdfFile.getVersion()));
+		logger.log(ChatFormater.format("%s version enabled", pdfFile.getName(), pdfFile.getVersion()));
 	}
 
 	/**
@@ -142,7 +142,6 @@ public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
 			dir = "W";
 			go = GoalOrientation.NS;
 		}
-		log(dir);
 		Block block;
 		switch (type) {
 			case CIRCLE:
