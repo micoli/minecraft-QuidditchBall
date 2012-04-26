@@ -2,6 +2,7 @@ name: QuidditchBall
 main: org.micoli.minecraft.quidditchBall.QuidditchBall
 version: 0.3
 description:
+depend: [Vault,morgUtils]
 commands:
     quidditchball:
       description: main command 
