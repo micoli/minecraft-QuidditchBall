@@ -161,23 +161,23 @@ public class QDObjectBall {
 		vector = new Vector(-1 * (x == 0 ? 0 : x / Math.abs(x)), -1 * (y == 0 ? 0 : y / Math.abs(y)), -1 * (z == 0 ? 0 : z / Math.abs(z)));
 
 		if (debug) {
-			plugin.sendComments(player, "distance" + String.format("%04.2f", ballPlayerDistance) + "->" + vector.toString() + " " + Double.toString(strenght), false);
+			plugin.sendComments(player, "distance" + String.format("%04.2f", ballPlayerDistance) + "->" + vector.toString() + " " + Double.toString(strenght));
 		}
 
 		Block target = this.block.getRelative((int) vector.getX() * strenght, isFlyingBall() ? (int) vector.getY() * strenght : 0, (int) vector.getZ() * strenght);
 		if ((isFlyingBall() || playerBlock.getY() == this.block.getY()) && (target.getType() == Material.AIR)) {
 			if (isFlyingBall()) {
 				if (target.getY() >= serverMaxHeight) {
-					plugin.sendComments(player, "too high", false);
+					plugin.sendComments(player, "too high");
 					return false;
 				}
 				if (target.getRelative(0, -2, 0).getType() != Material.AIR) {
-					plugin.sendComments(player, "too low ", false);
+					plugin.sendComments(player, "too low ");
 					return false;
 				}
 			}
 			if (debug) {
-				plugin.sendComments(player, this.block.getLocation().toString() + " " + target.getLocation().toString(), false);
+				plugin.sendComments(player, this.block.getLocation().toString() + " " + target.getLocation().toString());
 			}
 			switchBlock(target);
 			if (isInGoal()) {
