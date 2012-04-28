@@ -8,17 +8,20 @@ import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.Vector;
 import org.micoli.minecraft.bukkit.QDBukkitPlugin;
+import org.micoli.minecraft.bukkit.QDCommand;
+import org.micoli.minecraft.bukkit.QDCommandManager;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectBall;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalOrientation;
 import org.micoli.minecraft.quidditchBall.entities.QDObjectGoal.GoalType;
 import org.micoli.minecraft.quidditchBall.listeners.QDBlockListener;
 import org.micoli.minecraft.quidditchBall.listeners.QDPlayerListener;
-import org.micoli.minecraft.quidditchBall.managers.QDCommandManager;
 import org.micoli.minecraft.utils.ChatFormater;
 
 // TODO: Auto-generated Javadoc
@@ -69,8 +72,9 @@ public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
 		aGoals				= new HashMap<String, QDObjectGoal>();
 		coolDowns			= new HashMap<String, Long>();
 		instance			= this;
-		executor			= new QDCommandManager(this);
-
+		
+		executor = new QDCommandManager((QDBukkitPlugin)this,new Class[] { getClass() });
+		
 		pm.registerEvents(new QDPlayerListener(this), this);
 		pm.registerEvents(new QDBlockListener(this), this);
 		getCommand(getCommandString()).setExecutor(executor);
@@ -262,5 +266,41 @@ public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
 			QDObjectBall ball = (QDObjectBall) aBalls.get(key);
 			ball.touchBall(player, strenght, 1);
 		}
+	}
+	
+	
+	@QDCommand(aliases = "create", permissions = { "quidditchball.create" }, usage = "", description = "create a non floating ball")
+	public void cmd_create(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		createBall((Player) sender, false);
+	}
+	
+	@QDCommand(aliases = "create3D", permissions = { "quidditchball.create3D" }, usage = "", description = "create a floating ball")
+	public void cmd_create3D(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		createBall((Player) sender, true);
+	}
+	
+	@QDCommand(aliases = "remove", permissions = { "quidditchball.remove" }, usage = "<ballName>", description = "delete a ball")
+	public void cmd_remove(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		removeBall((Player) sender, args[1]);
+	}
+	
+	@QDCommand(aliases = "convert", permissions = { "quidditchball.convert" }, usage = "<ballName>", description = "convert the looked block to a ball")
+	public void cmd_convert(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		addBall((Player) sender, args[1]);
+	}
+	
+	@QDCommand(aliases = "strenght", permissions = { "quidditchball.strenght" }, usage = "strength", description = "set the strength of player when touching the balls")
+	public void cmd_strenght(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		setStrenght((Player) sender, Integer.parseInt(args[1]));
+	}
+	
+	@QDCommand(aliases = "createCircleGoal", permissions = { "quidditchball.createCircleGoal" }, usage = "<radius>", description = "create a spheroid goal of given radius")
+	public void cmd_createCircleGoal(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		addGoal((Player) sender, GoalType.CIRCLE, Integer.parseInt(args[1]), 0);
+	}
+	
+	@QDCommand(aliases = "createRectangleGoal", permissions = { "quidditchball.createRectangleGoal" }, usage = "<width> <height>", description = "create a rectangle goal with the given dimensions")
+	public void cmd_createRectangleGoal(CommandSender sender, Command command, String label, String[] args) throws Exception {
+		addGoal((Player) sender, GoalType.RECTANGLE, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 	}
 }
