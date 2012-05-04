@@ -75,8 +75,8 @@ public class QuidditchBall extends QDBukkitPlugin implements ActionListener {
 		
 		executor = new QDCommandManager((QDBukkitPlugin)this,new Class[] { getClass() });
 		
-		pm.registerEvents(new QDPlayerListener(this), this);
-		pm.registerEvents(new QDBlockListener(this), this);
+		getPm().registerEvents(new QDPlayerListener(this), this);
+		getPm().registerEvents(new QDBlockListener(this), this);
 		getCommand(getCommandString()).setExecutor(executor);
 
 		logger.log(ChatFormater.format("%s version enabled", pdfFile.getName(), pdfFile.getVersion()));
